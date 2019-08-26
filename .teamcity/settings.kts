@@ -25,7 +25,7 @@ object AndroidGradleBuild : BuildType({
             scriptContent = """
                 #!/bin/bash -e
                 
-                wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+                curl -L https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip > sdk-tools-linux-4333796.zip
                 
                 # unpack archive
                 unzip sdk-tools-linux-4333796.zip
