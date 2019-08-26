@@ -6,9 +6,32 @@ import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.vcs
 
+/*
+The settings script is an entry point for defining a TeamCity
+project hierarchy. The script should contain a single call to the
+project() function with a Project instance or an init function as
+an argument.
+
+VcsRoots, BuildTypes, Templates, and subprojects can be
+registered inside the project using the vcsRoot(), buildType(),
+template(), and subProject() methods respectively.
+
+To debug settings scripts in command-line, run the
+
+    mvnDebug org.jetbrains.teamcity:teamcity-configs-maven-plugin:generate
+
+command and attach your debugger to the port 8000.
+
+To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
+-> Tool Windows -> Maven Projects), find the generate task node
+(Plugins -> teamcity-configs -> teamcity-configs:generate), the
+'Debug' option is available in the context menu for the task.
+*/
+
 version = "2019.1"
 
 project {
+
     buildType(AndroidGradleBuild)
 }
 
@@ -17,8 +40,10 @@ object AndroidGradleBuild : BuildType({
 
     vcs {
         root(DslContext.settingsRoot)
+
         cleanCheckout = true
     }
+
     steps {
         script {
             name = "Download Android SDK"
@@ -35,14 +60,16 @@ object AndroidGradleBuild : BuildType({
                 mkdir android-sdk
                 mv tools android-sdk/tools
                 
-                echo "sdk.dir=$(pwd)/android-sdk/" >> local.properties
+                echo "sdk.dir=${'$'}(pwd)/android-sdk/" >> local.properties
             """.trimIndent()
         }
-        gradle {}
+        gradle {
+        }
     }
 
     triggers {
-        vcs {}
+        vcs {
+        }
     }
 
     features {
@@ -51,7 +78,7 @@ object AndroidGradleBuild : BuildType({
             publisher = github {
                 githubUrl = "https://api.github.com"
                 authType = personalToken {
-                    token = "%github.commit_status_publisher_token%"
+                    token = "credentialsJSON:a502bb02-a4fe-4261-ac1d-763e4cc112b3"
                 }
             }
         }
