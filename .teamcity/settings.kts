@@ -45,31 +45,16 @@ object AndroidGradleBuild : BuildType({
     }
 
     steps {
-        script {
-            name = "Download Android SDK"
-            scriptContent = """
-                #!/bin/bash -e
-                
-                curl -L https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip > sdk-tools-linux-4333796.zip
-                
-                # unpack archive
-                unzip sdk-tools-linux-4333796.zip
-                
-                rm sdk-tools-linux-4333796.zip
-                
-                mkdir android-sdk
-                mv tools android-sdk/tools
-                
-                echo "sdk.dir=${'$'}(pwd)/android-sdk/" >> local.properties
-            """.trimIndent()
-        }
-        gradle {
-        }
+        gradle {}
     }
 
     triggers {
         vcs {
         }
+    }
+
+    requirements {
+        exists("env.ANDROID_HOME")
     }
 
     features {
