@@ -38,7 +38,7 @@ project {
 object AndroidGradleBuild : BuildType({
     name = "Android Gradle Build"
     artifactRules = """
-        +:app/build/outputs/apk/debug/app-debug.apk => app-debug.apk
+        +:app/build/outputs/apk/debug/app-debug.apk
     """.trimIndent()
 
     vcs {
