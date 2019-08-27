@@ -45,7 +45,9 @@ object AndroidGradleBuild : BuildType({
     }
 
     steps {
-        gradle {}
+        gradle {
+            tasks = "assembleDebug"
+        }
     }
 
     triggers {
